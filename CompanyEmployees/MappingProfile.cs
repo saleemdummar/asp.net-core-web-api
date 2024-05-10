@@ -8,8 +8,13 @@ namespace CompanyEmployees
     {
         public MappingProfile()
         {
+            //CreateMap<Company, CompanyDto>()
+            //    .ForCtorParam("FullAddress",opt => opt.MapFrom(x => string.Join(" ",x.Address,x.Country)));
+            //CreateMap<Employee, EmployeeDto>();
+
+            // this is the new method after addding the serilization for xml
             CreateMap<Company, CompanyDto>()
-                .ForCtorParam("FullAddress",opt => opt.MapFrom(x => string.Join(" ",x.Address,x.Country)));
+                .ForMember(c => c.FullAddress, opt => opt.MapFrom(x => string.Join(' ',x.Address,x.Country)));
             CreateMap<Employee, EmployeeDto>();
         }
     }
