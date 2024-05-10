@@ -1,5 +1,6 @@
 using CompanyEmployees.Extensions;
 using Contracts;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 
@@ -16,9 +17,12 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 
 builder.Services.AddControllers(config =>
 {
-    config.RespectBrowserAcceptHeader= true;
+    config.RespectBrowserAcceptHeader = true;
+    config.ReturnHttpNotAcceptable = true;  //in this line if the client tries to negotiate for the media type the 
+                                            // server doesn’t support, it should return the 406 Not Acceptable status  code
 }).AddXmlDataContractSerializerFormatters()
-    .AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly);
+  .AddCustomCSVFormatter()  // this line will format the output to the csv format
+  .AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly);
 
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
