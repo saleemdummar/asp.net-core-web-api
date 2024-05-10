@@ -13,8 +13,12 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureSqlContext(builder.Configuration);
-builder.Services.AddControllers()
+
+builder.Services.AddControllers(config =>{
+    config.RespectBrowserAcceptHeader= true;
+}).AddXmlDataContractSerializerFormatters()
     .AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly);
+
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 builder.Services.ConfigureLoggerService();
