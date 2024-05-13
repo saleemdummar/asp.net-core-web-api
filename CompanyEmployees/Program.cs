@@ -16,10 +16,10 @@ builder.Services.ConfigureServiceManager();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.ConfigureSqlContext(builder.Configuration);
 
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-    options.SuppressModelStateInvalidFilter = true;
-});
+//builder.Services.Configure<ApiBehaviorOptions>(options =>
+//{
+//    options.SuppressModelStateInvalidFilter = true;
+//});
 builder.Services.AddControllers(config =>
 {
     config.RespectBrowserAcceptHeader = true;
