@@ -14,10 +14,7 @@ namespace Repository
         {
         }
 
-        public void CreateCompany(Company company)
-        {
-            Create(company);
-        }
+        public void CreateCompany(Company company) => Create(company);
 
         public IEnumerable<Company> GetAllCompanies(bool trackChanges)
         {
