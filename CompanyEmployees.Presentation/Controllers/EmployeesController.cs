@@ -39,7 +39,7 @@ namespace CompanyEmployees.Presentation.Controllers
                 return BadRequest("EmployeeForCreationDto object is null");
             }
             var employeeToReturn = _service.EmployeeService.CreateEmployeeForCompany(companyId,employee,trackChanges:false);
-            return CreatedAtRoute("GetEmployeeForCompany",new {companyId,id=employeeToReturn.Id},employee);
+            return CreatedAtRoute("GetEmployeeForCompany",new {companyId,id=employeeToReturn.Id},employeeToReturn);
         }
     }
 }
