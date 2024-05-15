@@ -25,21 +25,30 @@ namespace CompanyEmployees.Presentation.Controllers
             false);
             return Ok(employees);
         }
+
         [HttpGet("{id:guid}", Name = "GetEmployeeForCompany")]
         public IActionResult GetEmployee(Guid companyId, Guid Id)
         {
             var employee = _service.EmployeeService.GetEmployee(companyId, Id, trackChanges: false);
             return Ok(employee);
         }
+
         [HttpPost]
-        public IActionResult CreateEmployeeForCompany(Guid companyId,[FromBody] EmployeeForCreationDto employee)
+        public IActionResult CreateEmployeeForCompany(Guid companyId, [FromBody] EmployeeForCreationDto employee)
         {
             if (employee is null)
             {
                 return BadRequest("EmployeeForCreationDto object is null");
             }
-            var employeeToReturn = _service.EmployeeService.CreateEmployeeForCompany(companyId,employee,trackChanges:false);
-            return CreatedAtRoute("GetEmployeeForCompany",new {companyId,id=employeeToReturn.Id},employeeToReturn);
+            var employeeToReturn = _service.EmployeeService.CreateEmployeeForCompany(companyId, employee, trackChanges: false);
+            return CreatedAtRoute("GetEmployeeForCompany", new { companyId, id = employeeToReturn.Id }, employeeToReturn);
+        }
+
+        [HttpDelete("{id:guid}")]
+        public IActionResult DeleteEmployee(Guid companyId,Guid id)
+        {
+            _service.EmployeeService.DeleteEmployeeForCompany(companyId, id,trackChanges:false);
+            return NoContent();
         }
     }
 }
