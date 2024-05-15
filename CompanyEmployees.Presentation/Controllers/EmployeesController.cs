@@ -45,9 +45,18 @@ namespace CompanyEmployees.Presentation.Controllers
         }
 
         [HttpDelete("{id:guid}")]
-        public IActionResult DeleteEmployee(Guid companyId,Guid id)
+        public IActionResult DeleteEmployee(Guid companyId, Guid id)
         {
-            _service.EmployeeService.DeleteEmployeeForCompany(companyId, id,trackChanges:false);
+            _service.EmployeeService.DeleteEmployeeForCompany(companyId, id, trackChanges: false);
+            return NoContent();
+        }
+        [HttpPut("{id:guid}")]
+        public IActionResult UpdateEmployeeForCompany(Guid companyId, Guid id, [FromBody] EmployeeForUpdateDto employee)
+        {
+            if (employee is null)
+                return BadRequest("EmployeeForUpdateDto object is null");
+
+            _service.EmployeeService.UpdateEmployeeForCompany(companyId, id, employee, comTrackChanges: false,empTrackChanges:true);
             return NoContent();
         }
     }
