@@ -60,5 +60,14 @@ namespace CompanyEmployees.Presentation.Controllers
             _service.CompanyService.DeleteCompany(id, trackChanges: false);
             return NoContent();
         }
+
+        [HttpPut("{id:guid}")]
+        public IActionResult UpdateCompany(Guid id, [FromBody] CompanyForUpdateDto company)
+        {
+            if (company is null)
+                return BadRequest("CompanyForUpdateDto object is null");
+            _service.CompanyService.UpdateCompany(id, company, trackChanges: true);
+            return  NoContent();
+        }
     }
 }
