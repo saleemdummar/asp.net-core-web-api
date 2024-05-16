@@ -79,6 +79,8 @@ namespace CompanyEmployees.Presentation.Controllers
 
             patchDoc.ApplyTo(result.employeeToPatch,ModelState);
 
+            TryValidateModel(result.employeeToPatch); // this will triger validation and every error will make modelState invalid.
+
             if (!ModelState.IsValid)
                 return UnprocessableEntity(ModelState);
             
