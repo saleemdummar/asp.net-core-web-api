@@ -1,9 +1,21 @@
 using CompanyEmployees.Extensions;
 using Contracts;
-using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Options;
 using NLog;
+
+//By using AddNewtonsoftJson, we are replacing the System.Text.Json
+//formatters for all JSON content. We don’t want to do that so, we are 
+//going ton add a simple workaround in the Program class:
+
+NewtonsoftJsonPatchInputFormatter GetJsonPatchInputFormatter() =>
+new ServiceCollection().AddLogging().AddMvc().AddNewtonsoftJson()
+.Services.BuildServiceProvider()
+.GetRequiredService<IOptions<MvcOptions>>().Value.InputFormatters
+.OfType<NewtonsoftJsonPatchInputFormatter>().First();
+
 
 var builder = WebApplication.CreateBuilder(args);
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
@@ -22,12 +34,14 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 //});
 builder.Services.AddControllers(config =>
 {
+    config.InputFormatters.Insert(0, GetJsonPatchInputFormatter());
     config.RespectBrowserAcceptHeader = true;
     config.ReturnHttpNotAcceptable = true;  //in this line if the client tries to negotiate for the media type the 
                                             // server doesn’t support, it should return the 406 Not Acceptable status  code
 }).AddXmlDataContractSerializerFormatters()
   .AddCustomCSVFormatter()  // this line will format the output to the csv format
-  .AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly);
+  .AddApplicationPart(typeof(CompanyEmployees.Presentation.AssemblyReference).Assembly)
+  .AddNewtonsoftJson();
 
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
@@ -38,7 +52,6 @@ var logger = app.Services.GetRequiredService<ILoggerManager>();
 app.ConfigureExceptionHandler(logger);
 if (app.Environment.IsDevelopment())
     app.UseHsts();
-
 
 // Configure the HTTP request pipeline.
 
