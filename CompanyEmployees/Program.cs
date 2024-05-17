@@ -1,4 +1,5 @@
 using CompanyEmployees.Extensions;
+using CompanyEmployees.Presentation.ActionFilters;
 using Contracts;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,7 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 //{
 //    options.SuppressModelStateInvalidFilter = true;
 //});
+builder.Services.AddScoped<ValidationFilterAttribute>();
 builder.Services.AddControllers(config =>
 {
     config.InputFormatters.Insert(0, GetJsonPatchInputFormatter());
