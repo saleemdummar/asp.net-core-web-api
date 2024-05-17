@@ -24,7 +24,7 @@ namespace CompanyEmployees.Presentation.Controllers
         [HttpGet]
         public async Task<IActionResult> GetEmployeesForCompany(Guid companyId, [FromQuery] EmployeeParameters employeeParamaters)
         {
-            var employees = await _service.EmployeeService.GetEmployeesAsync(companyId, trackChanges:
+            var employees = await _service.EmployeeService.GetEmployeesAsync(companyId,employeeParamaters, trackChanges:
             false);
             return Ok(employees);
         }
