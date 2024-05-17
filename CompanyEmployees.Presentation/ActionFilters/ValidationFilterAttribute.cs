@@ -15,9 +15,10 @@ namespace CompanyEmployees.Presentation.ActionFilters
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            var action = context.RouteData.Values["action"];
-            var controller = context.RouteData.Values["controller"];
+            var action = context.RouteData.Values["action"]; // retrieve the value on the current routing path since we need the name of the action
+            var controller = context.RouteData.Values["controller"];// retrieve the value on the current routing path since we need the name of the controller
 
+            // we use ActionArguments dictionary to extract the Dto paramater that we send to the post and put actions
             var param = context.ActionArguments.SingleOrDefault(x => x.Value.ToString().Contains("Dto")).Value;
             if (param is null)
             {
