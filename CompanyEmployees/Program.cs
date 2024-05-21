@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Options;
 using NLog;
+using Service.DataShaping;
+using Shared.DataTransferObjects;
 
 //By using AddNewtonsoftJson, we are replacing the System.Text.Json
 //formatters for all JSON content. We don’t want to do that so, we are 
@@ -34,6 +36,7 @@ builder.Services.ConfigureSqlContext(builder.Configuration);
 //    options.SuppressModelStateInvalidFilter = true;
 //});
 builder.Services.AddScoped<ValidationFilterAttribute>();
+builder.Services.AddScoped<IDataShaper<EmployeeDto>, DataShaper<EmployeeDto>>();
 builder.Services.AddControllers(config =>
 {
     config.InputFormatters.Insert(0, GetJsonPatchInputFormatter());
